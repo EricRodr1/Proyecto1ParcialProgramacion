@@ -41,13 +41,13 @@ static double efectivocaja = 0.0;
                 hacerventa();
                 break;
                 case 3 :
-                compra();
+                //compra();
                 break;
                 case 4 :
-                reportes();
+                //reportes();
                 break;
                 case 5 :
-                cierrecaja();
+               // cierrecaja();
                 break;
                 case 6 :
                     System.out.println("Saliendo del sistema");
@@ -64,6 +64,99 @@ static double efectivocaja = 0.0;
         System.out.println("Se ha agregado Lps. "+cantidad+"a caja");
     }
     static void hacerventa(){
+        System.out.println("*****VENTA*******");
+        System.out.println("Ingrese el tipo de cliente: ");
+        //TRANSFORMAR A MAYUSCULA
+        String tipodecliente = sc.nextLine().toUpperCase();
+        if (!tipodecliente.equals("A") && !tipodecliente.equals("B") && !tipodecliente.equals("C") ) {
+            System.out.println("Tipo de cliente no valido, intente de nuevo!");
+            return;
+        }
+        boolean seguircompra = true;
+        double subtotalventa =0.0;
+        //Guardar el resumen de los productos vendidos
+        String resumirventa = "";
+        
+        while(seguircompra){
+            System.out.println("Ingrese el codigo del producto a vender 1-Azucar 2-Avena 3-Trigo 4-Maiz");
+            int codigoproducto = sc.nextInt();
+            String nombredelproducto = "";
+            double preciodelaventa = 0.0;
+            boolean puedecomprar = true;
+            
+            switch (codigoproducto){
+                case 1:
+                    nombredelproducto = "Azucar";
+                    preciodelaventa = 30.0;
+                    puedecomprar = true;
+                    break;
+                case 2:
+                    nombredelproducto = "Avena";
+                    preciodelaventa = 25.0;  
+                    if (tipodecliente.equals("A") || tipodecliente.equals("C")){
+                       puedecomprar = true;
+                       
+                    }
+                    break;
+                case 3:
+                    nombredelproducto = " Trigo";
+                    preciodelaventa = 32.0;
+                    if (tipodecliente.equals("A") || tipodecliente.equals("B ")){
+                        puedecomprar = true;
+                    }
+                    break;
+                case 4:
+                    nombredelproducto = "Maiz";
+                    preciodelaventa = 20.0;
+                    if(tipodecliente.equals("A") || tipodecliente.equals("C")){
+                        puedecomprar = true;
+                    }
+                    break;
+            }
+            //?
+            if(nombredelproducto.equals("")){
+                continue;
+            }
+            if (puedecomprar){
+                System.out.println("Su producto es: "+nombredelproducto+",Precio por Kilogramos: Lps."+preciodelaventa);
+                System.out.println("Ingrese la cantidad en Kilogramos a comprar: ");
+                double cantidadkilo = sc.nextDouble();
+                
+                double subtotalproducto = cantidadkilo * preciodelaventa;
+                subtotalventa += subtotalproducto;
+                resumirventa += cantidadkilo + "Kilogramos de "+nombredelproducto+ " a Lempiras " +preciodelaventa+ "= Lps." +subtotalproducto + "\n";
+                        
+            }else{
+                System.out.println("No puede comprar el producto");
+            }
+            System.out.println("Desea probar con otro producto? (si/no)");
+            String respuestasino = sc.nextLine().toLowerCase();
+            if(!respuestasino.equals("si")){
+                seguircompra = false;
+            }
+        }
+        //FACTURA
+        System.out.println("\n********F A C T U R A **********");
+        System.out.println(resumirventa);
+        
+        double descuento = 0.0;
+        if (subtotalventa >= 5000){
+            descuento = subtotalventa *0.10;
+            System.out.println("Descuento aplicado: Lps."+ descuento);
+        } else if (subtotalventa >= 1000){
+            descuento = subtotalventa * 0.05;
+            System.out.println("Descuento aplicado: Lps. "+ descuento);
+        } else {
+            System.out.println("Su compra no aplica a descuento");
+        }
+        double subtotalcondescuento = subtotalventa - descuento;
+        double impuesto = subtotalcondescuento * 0.07;
+        System.out.println("Su impuesto es de: Lps."+ impuesto);
+        double totalapagar = subtotalcondescuento + impuesto;
+        System.out.println("Su total a pagar es de: Lps. "+efectivocaja);
+        
+        efectivocaja += totalapagar;
+        System.out.println("Efectivo en caja: Lps."+efectivocaja);
         
     }
     }

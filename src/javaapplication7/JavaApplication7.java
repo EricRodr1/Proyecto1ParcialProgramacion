@@ -13,6 +13,13 @@ import java.util.Scanner;
 public class JavaApplication7 {
 static Scanner sc = new Scanner (System.in);
 static double efectivocaja = 0.0;
+static int numerodeventas = 0;
+    static int numerodecompras = 0;
+    static double volumendeventas = 0.0;
+    static double totaldecompras = 0.0;
+    static double mayorganancia = 0.0;
+    static double mayorgasto = 0.0;
+    static boolean estadocaja = false; //Con esto manejamos si la caja esta cerrada o abierta
     /**
      * @param args the command line arguments
      */
@@ -21,6 +28,7 @@ static double efectivocaja = 0.0;
         
     
         int opcion;
+         
          
         do{
         System.out.println("**** BIENVENIDO A LA TIENDA ****");
@@ -32,16 +40,33 @@ static double efectivocaja = 0.0;
         System.out.println("5. CIERRE DE CAJA");
         System.out.println("6. SALIR DEL SISTEMA");
         opcion = sc.nextInt();
+        
+        if (estadocaja && opcion != 1 && opcion !=6){
+            System.out.println("Abrir caja primero porfavor");
+            continue; //Vuelve al inicio
+        }
         sc.nextLine();
         switch (opcion){
-            
+            //ABRIRCAJA
             case 1 :
-                System.out.println("Ingrese la cantidad a depositar en lempiras");
+                if(estadocaja){
+                    System.out.println("Caja abierta");
+                    numerodeventas = 0;
+                    numerodecompras = 0;
+                    volumendeventas = 0.0;
+                    totaldecompras = 0.0;
+                    mayorganancia = 0.0;
+                    mayorgasto = 0.0;
+                    estadocaja = false;
+                }else {
+                 System.out.println("Ingrese la cantidad a depositar en lempiras");
         double cantidad = sc.nextDouble();
         efectivocaja += cantidad;
         System.out.println("Se ha agregado Lps. "+cantidad+" a caja");
+                }
+        
                 break;
-                
+                //VENTAS
                 case 2 :
                 System.out.println("*****VENTA*******");
         System.out.println("Ingrese el tipo de cliente: ");
@@ -133,15 +158,19 @@ static double efectivocaja = 0.0;
         double impuesto = subtotalcondescuento * 0.07;
         System.out.println("Su impuesto es de: Lps."+ impuesto);
         double totalapagar = subtotalcondescuento + impuesto;
-        System.out.println("Su total a pagar es de: Lps. "+efectivocaja);
+        System.out.println("Su total a pagar es de: Lps. "+totalapagar);
         
         efectivocaja += totalapagar;
         System.out.println("Efectivo en caja: Lps."+efectivocaja);
         
+        numerodeventas ++;
+        volumendeventas += totalapagar;
+        
         
                 break;
+                //COMPRAS
                 case 3 :
-                    //Ventas
+                    
                      
                     System.out.println("Favor ingrese el tipo de proveedor");
                     String proveedor = sc.next();
@@ -149,7 +178,7 @@ static double efectivocaja = 0.0;
                         System.out.println("Tipo de proveedor no valido. Intente de nuevo");
                         return;
                     }
-                    System.out.println("Ingrese el código del producto a comprar (1-Azúcar, 2-Avena, 3-Trigo, 4-Maíz): ");
+                    System.out.println("Ingrese el codigo del producto a comprar (1-Azucar, 2-Avena, 3-Trigo, 4-Maiz): ");
                     int codigoproducto = sc.nextInt();
                     
                     String nombredelproducto ="";
@@ -159,7 +188,7 @@ static double efectivocaja = 0.0;
                     switch (codigoproducto){
                         case 1:
                             nombredelproducto = "Azucar";
-                            if(proveedor.equals("A") && proveedor.equals("a")){
+                            if(proveedor.equals("A") || proveedor.equals("a")){
                                 preciodelacompra = 25.0;
                                 hayproducto = true;
                             }
@@ -184,18 +213,31 @@ static double efectivocaja = 0.0;
                                 
                             }
                             break;
+                        case 4:
+                                nombredelproducto = "Maiz";
+                                if (proveedor.equals("A") || proveedor.equals("a")){
+                                    preciodelacompra = 18.0;
+                                    hayproducto = true;
+                                    
+                                }
+                                break;
                         default:
                             System.out.println("Opcion no valida. Intente de nuevo");
                             break;
                     }
                     if(!nombredelproducto.equals("") && hayproducto){
-                        System.out.println("Proveedor:"+proveedor+"vende:" +nombredelproducto);
+                        System.out.println("Proveedor "+proveedor+" vende: " +nombredelproducto);
+                        System.out.print("Ingrese la cantidad en kilogramos a comprar: Kg.");
                         double cantidadacomprar = sc.nextDouble();
                         double totalacomprar = cantidadacomprar * preciodelacompra;
                         if (efectivocaja >= totalacomprar){
                             efectivocaja -= totalacomprar;
                             System.out.println("Compra realizada! Efectivo restante: Lps. "+efectivocaja);
-                            
+                            numerodecompras++; //Incrementamos el numero de compra
+                            totaldecompras += totalacomprar;
+                            if (totalacomprar > mayorgasto){
+                                mayorgasto = totalacomprar; //Se actualiza el mayor gasto
+                            }
                             
                          }else {
                             System.out.println("No se puede realizar la compra. Efectivo insuficiente");
@@ -205,15 +247,25 @@ static double efectivocaja = 0.0;
                         System.out.println("Este proveedor no vende este producto");
                         
                     }
-                    System.out.println("Fin de la compra");
-                    
-                    
+                    System.out.println("Fin de la compra"); 
                 break;
-                case 4 :
-                //reportes();
+                //REPORTES
+                case 4: 
+                         
+                         double margenganancia = volumendeventas - totaldecompras ;
+                         //OPERADOR TERNARIO
+                          double valormventa = (numerodeventas > 0) ? (volumendeventas / numerodeventas) : 0;
+                          double valormcompra = (numerodecompras > 0) ? (totaldecompras / numerodecompras) : 0;
+                    System.out.println("********REPORTES********");
+                    System.out.println("a. Cantidad en caja: Lps." +efectivocaja);
+                    System.out.println("b. Numero de compras: "+numerodecompras+"\nNumero de Ventas: "+numerodeventas);
+                    System.out.println("c. Volumen Total de Compras: "+volumendeventas+"\nVentas efectuadas: "+numerodeventas+"\nMargen de ganancia: Lps. "+margenganancia);
+                    System.out.println("d. Valor medio de venta: " +valormventa+ " %\nValor medio de compra: Lps. "+valormcompra+" %");
+                    System.out.println("e. Venta con mayor ganancia: Lps. \nCompra con mas gasto efectuada: ");
+                    System.out.println("f. Producto estrella: ");
                 break;
                 case 5 :
-               // cierrecaja();
+               System.out.println("********CIERRE DE CAJA********");
                 break;
                 case 6 :
                     System.out.println("Saliendo del sistema");

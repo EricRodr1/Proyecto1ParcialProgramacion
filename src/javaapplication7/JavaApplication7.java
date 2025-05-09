@@ -266,6 +266,17 @@ static int numerodeventas = 0;
                 break;
                 case 5 :
                System.out.println("********CIERRE DE CAJA********");
+               double gananciatot = volumendeventas - totaldecompras;
+                    System.out.println("La ganancia total en el dia es de Lps. "+gananciatot);
+                    System.out.println("Efectivo a la hora de cierre: Lps. "+efectivocaja);
+                    System.out.println("Cuanto desea depositar en el banco? (Maximo el 60%)");
+                     double deposito = sc.nextDouble();
+                   var depositofin = efectivocaja * 0.60;
+                    if (deposito > depositofin) {
+                        System.out.println("");
+                        
+                    }
+ 
                 break;
                 case 6 :
                     System.out.println("Saliendo del sistema");

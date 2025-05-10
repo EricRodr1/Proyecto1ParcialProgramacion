@@ -270,10 +270,13 @@ static int numerodeventas = 0;
                     System.out.println("La ganancia total en el dia es de Lps. "+gananciatot);
                     System.out.println("Efectivo a la hora de cierre: Lps. "+efectivocaja);
                     System.out.println("Cuanto desea depositar en el banco? (Maximo el 60%)");
+                    double maximodepo = (efectivocaja * 0.60);
+                    System.out.println("El maximo a depositar el dia de hoy seria: Lps. "+maximodepo);
                      double deposito = sc.nextDouble();
-                   var depositofin = efectivocaja * 0.60;
+                   double depositofin = efectivocaja * 0.60;
                     if (deposito > depositofin) {
-                        System.out.println("");
+                        System.out.println("La cantidad excede el 60%");
+                         
                         
                     }
  

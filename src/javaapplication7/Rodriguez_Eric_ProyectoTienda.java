@@ -10,7 +10,7 @@ import java.util.Scanner;
  *
  * @author Eric Rodriguez
  */
-public class JavaApplication7 {
+public class Rodriguez_Eric_ProyectoTienda {
 static Scanner sc = new Scanner (System.in);
 static double efectivocaja = 0.0;
 static int numerodeventas = 0;
@@ -19,16 +19,19 @@ static int numerodeventas = 0;
     static double totaldecompras = 0.0;
     static double mayorganancia = 0.0;
     static double mayorgasto = 0.0;
-    static boolean estadocaja = false; //Con esto manejamos si la caja esta cerrada o abierta
+   
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        
+        boolean estadocaja = false; //Con esto manejamos si la caja esta cerrada o abierta
     
         int opcion;
-         
+        int contadorazucar=0;
+        int contadoravena=0;
+        int contadortrigo=0;
+        int contadormaiz=0;
          
         do{
         System.out.println("**** BIENVENIDO A LA TIENDA ****");
@@ -40,16 +43,13 @@ static int numerodeventas = 0;
         System.out.println("5. CIERRE DE CAJA");
         System.out.println("6. SALIR DEL SISTEMA");
         opcion = sc.nextInt();
+        boolean ingresarefectivo;
         
-        if (estadocaja && opcion != 1 && opcion !=6){
-            System.out.println("Abrir caja primero porfavor");
-            continue; //Vuelve al inicio
-        }
         sc.nextLine();
         switch (opcion){
             //ABRIRCAJA
             case 1 :
-                if(estadocaja){
+                
                     System.out.println("Caja abierta");
                     numerodeventas = 0;
                     numerodecompras = 0;
@@ -57,33 +57,40 @@ static int numerodeventas = 0;
                     totaldecompras = 0.0;
                     mayorganancia = 0.0;
                     mayorgasto = 0.0;
-                    estadocaja = false;
-                }else {
+                    estadocaja = true;
+                
                  System.out.println("Ingrese la cantidad a depositar en lempiras");
         double cantidad = sc.nextDouble();
         efectivocaja += cantidad;
         System.out.println("Se ha agregado Lps. "+cantidad+" a caja");
-                }
+                
         
                 break;
                 //VENTAS
                 case 2 :
-                System.out.println("*****VENTA*******");
-        System.out.println("Ingrese el tipo de cliente: ");
+                    if (estadocaja == true){
+                  
+                        System.out.println("*****VENTA*******");
+                        System.out.println("Ingrese el tipo de cliente: ");
+                        System.out.println("A - Puede comprar cualquier producto");
+                        System.out.println("B - Puede comprar producto: 1,2 y 3");
+                        System.out.println("C - Puede comprar producto: 4");
         //TRANSFORMAR A MAYUSCULA
-        //ESTUDIAR E INVESTIGAR
+        //ESTUDIAR  
         String tipodecliente = sc.nextLine().toUpperCase();
         if (!tipodecliente.equals("A") && !tipodecliente.equals("B") && !tipodecliente.equals("C") ) {
             System.out.println("Tipo de cliente no valido, intente de nuevo!");
             return;
         }
-        boolean seguircompra = true;
+                
+       
+        boolean seguircompra = true  ;
         double subtotalventa =0.0;
         //Guardar el resumen de los productos vendidos
         String resumirventa = "";
         
-        while(seguircompra){
-            System.out.println("Ingrese el codigo del producto a vender 1-Azucar 2-Avena 3-Trigo 4-Maiz");
+        while(seguircompra == true){
+            System.out.println("Ingrese el codigo del producto a vender \n1-Azucar \n2-Avena \n3-Trigo \n4-Maiz");
             int codigoproducto = sc.nextInt();
             String nombredelproducto = "";
             double preciodelaventa = 0.0;
@@ -91,39 +98,65 @@ static int numerodeventas = 0;
             
             switch (codigoproducto){
                 case 1:
+                    if(tipodecliente.equals("A") || tipodecliente.equals("B")){
                     nombredelproducto = "Azucar";
                     preciodelaventa = 30.0;
                     puedecomprar = true;
+                    contadorazucar++;
+                    } else {
+                        System.out.println("No puede comprar el producto");
+                        puedecomprar = false;
+                    }
                     break;
                 case 2:
+                    if (tipodecliente.equals("A") || tipodecliente.equals("B")){
                     nombredelproducto = "Avena";
                     preciodelaventa = 25.0;  
-                    if (tipodecliente.equals("A") || tipodecliente.equals("C")){
+                    
                        puedecomprar = true;
+                       contadoravena++;
+                    }else{
+                        System.out.println("No puede comprar este producto");
+                        puedecomprar = false;
+                    
                        
                     }
                     break;
                 case 3:
+                    if (tipodecliente.equals("A") || tipodecliente.equals("B")){
                     nombredelproducto = " Trigo";
                     preciodelaventa = 32.0;
-                    if (tipodecliente.equals("A") || tipodecliente.equals("B")){
+                     
                         puedecomprar = true;
+                        contadortrigo++;
+                    } else {
+                        System.out.println("No puede comprar este producto");
+                        puedecomprar = false;
                     }
                     break;
                 case 4:
-                    nombredelproducto = "Maiz";
-                    preciodelaventa = 20.0;
                     if(tipodecliente.equals("A") || tipodecliente.equals("C")){
                         puedecomprar = true;
+                    
+                    nombredelproducto = "Maiz";
+                    preciodelaventa = 20.0;
+                     contadormaiz++;
+                    } else {
+                        System.out.println("No puede comprar este producto ");
+                        puedecomprar = false;
                     }
                     break;
+                default:
+                    System.out.println("Codigo de producto no valido");{
+                    break;
+                }
             }
             //?
-            if(nombredelproducto.equals("")){
+            /*if(nombredelproducto.equals("")){
                 continue;
-            }
+            }*/
             if (puedecomprar){
-                System.out.println("Su producto es: "+nombredelproducto+",Precio por Kilogramos: Lps."+preciodelaventa);
+                System.out.println("Su producto es: " +nombredelproducto+ ",Precio por Kilogramos: Lps."+preciodelaventa);
                 System.out.println("Ingrese la cantidad en Kilogramos a comprar: ");
                 double cantidadkilo = sc.nextDouble();
                 
@@ -136,10 +169,14 @@ static int numerodeventas = 0;
             }
             System.out.println("Desea comprar mas productos? (si/no)");
             String respuestasino = sc.nextLine().toLowerCase();
-            if(!respuestasino.equals("si")){
-                seguircompra = false;
+            if(respuestasino.equals("si")){
+                seguircompra = true;
+            } else if (respuestasino.equals("no")){
+                seguircompra =false;
             }
         }
+                        
+        
         //FACTURA
         System.out.println("\n********F A C T U R A **********");
         System.out.println(resumirventa);
@@ -165,13 +202,17 @@ static int numerodeventas = 0;
         
         numerodeventas ++;
         volumendeventas += totalapagar;
+                    } else if (estadocaja == false){
+                        System.out.println("Caja Cerrada, Favor intente de nuevo");
+                    }
+                    
         
         
                 break;
                 //COMPRAS
                 case 3 :
                     
-                     
+                     if (estadocaja == true){
                     System.out.println("Favor ingrese el tipo de proveedor");
                     String proveedor = sc.next();
                     if (!proveedor.equals("A") && !proveedor.equals("B") && !proveedor.equals("C") && !proveedor.equals("a") && !proveedor.equals("b") && !proveedor.equals("c")){
@@ -248,10 +289,13 @@ static int numerodeventas = 0;
                         
                     }
                     System.out.println("Fin de la compra"); 
+                     } else if (estadocaja == false){
+                         System.out.println("Caja Cerrada, Favor intente de nuevo");
+                     }
                 break;
                 //REPORTES
                 case 4: 
-                         
+                         if (estadocaja == true){
                          double margenganancia = volumendeventas - totaldecompras ;
                          //OPERADOR TERNARIO
                           double valormventa = (numerodeventas > 0) ? (volumendeventas / numerodeventas) : 0;
@@ -262,9 +306,24 @@ static int numerodeventas = 0;
                     System.out.println("c. Volumen Total de Compras: "+volumendeventas+"\nVentas efectuadas: "+numerodeventas+"\nMargen de ganancia: Lps. "+margenganancia);
                     System.out.println("d. Valor medio de venta: " +valormventa+ " %\nValor medio de compra: Lps. "+valormcompra+" %");
                     System.out.println("e. Venta con mayor ganancia: Lps. \nCompra con mas gasto efectuada: ");
-                    System.out.println("f. Producto estrella: ");
+                    
+                    String productoestrella = "";
+                    if (contadorazucar > contadortrigo &&contadorazucar > contadormaiz && contadorazucar > contadoravena){
+                        productoestrella = "Azucar";
+                    } else if (contadoravena > contadortrigo &&contadoravena > contadormaiz && contadoravena > contadorazucar){
+                        productoestrella = "Avena";
+                    } else if (contadortrigo > contadoravena &&contadortrigo > contadormaiz && contadortrigo > contadorazucar) {
+                        productoestrella = "Trigo";
+                    } else {
+                        productoestrella = "Maiz";
+                    }
+                    System.out.println("f. Producto estrella del dia: "+productoestrella);
+                }else if (estadocaja == false){
+                             System.out.println("Caja Cerrada, Favor intente de nuevo");
+                        }
                 break;
                 case 5 :
+                    if (estadocaja == true){
                System.out.println("********CIERRE DE CAJA********");
                double gananciatot = volumendeventas - totaldecompras;
                     System.out.println("La ganancia total en el dia es de Lps. "+gananciatot);
@@ -276,23 +335,28 @@ static int numerodeventas = 0;
                    double depositofin = efectivocaja * 0.60;
                     if (deposito > depositofin) {
                         System.out.println("La cantidad excede el 60%");
-                         
+                        estadocaja = false;
+                    } else if (estadocaja == false){
+                        System.out.println("Caja Cerrada, Favor intente de nuevo");
+                    }
                         
                     }
  
                 break;
                 case 6 :
-                    System.out.println("Saliendo del sistema");
+                    System.out.println("Saliendo del sistema. Que tenga buen dia");
+                    System.exit(0);
                 break;
                 default:
                     System.out.println("Opcion no valida, Intente de nuevo");
         }                
         } while (opcion != 6);
-       } 
-    
+                
+         
      
     
     }
+}
   
         
                

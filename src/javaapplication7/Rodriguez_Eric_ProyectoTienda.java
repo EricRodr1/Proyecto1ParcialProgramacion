@@ -72,7 +72,7 @@ public class Rodriguez_Eric_ProyectoTienda {
                         System.out.print("Ingrese la cantidad a depositar en lempiras: Lps. ");
                         cantidad = sc.nextDouble();
 
-                        if (cantidad <= -1) {
+                        if (cantidad <= 0) {
                             System.out.println("Cantidad no valida intente de nuevo");
                         } else {
                             efectivocaja += cantidad;
@@ -82,7 +82,7 @@ public class Rodriguez_Eric_ProyectoTienda {
                     break;
                 //VENTAS
                 case 2:
-                    if (estadocaja == true & puedevender == true) {
+                    if (estadocaja == true && puedevender == true) {
                         String tipodecliente = "";
 
                          do{
@@ -91,46 +91,49 @@ public class Rodriguez_Eric_ProyectoTienda {
                             System.out.println("A - Puede comprar cualquier producto");
                             System.out.println("B - Puede comprar producto: 1,2 y 3");
                             System.out.println("C - Puede comprar producto: 4");
-                            tipodecliente = sc.nextLine().toUpperCase();
+                            tipodecliente = sc.next().toUpperCase();
                             if (!tipodecliente.equals("A") && !tipodecliente.equals("B") && !tipodecliente.equals("C")) {
                                 System.out.println("Tipo de cliente no valido, intente de nuevo!");
                                 seguircompra = false;
                             } else{
                                 seguircompra = true;
                             }
-                        } while (!tipodecliente.equals("A") || !tipodecliente.equals("B") || !tipodecliente.equals("C"));
+                        } while (!tipodecliente.equals("a") || !tipodecliente.equals("b") || !tipodecliente.equals("c"));
 
                         
                         double subtotalventa = 0.0;
                         String resumirventa = "";
                         double preciodelaventa = 0.0;
                         String nombredelproductoavender = "";
+                        int codigoproducto = 0;
 
-                            boolean puedecomprar = true;
+                            boolean puedecomprar = false;
                         do {
                             System.out.println("Ingrese el codigo del producto a vender \n1-Azucar - Lps. 30 x Kilo \n2-Avena - Lps. 25 x Kilo \n3-Trigo - Lps. 32 x Kilo \n4-Maiz - Lps. 20 x Kilo");
-                            int codigoproducto = sc.nextInt();
+                            codigoproducto = sc.nextInt();
                             sc.nextLine();
-                             
-                            if (codigoproducto == 1 && tipodecliente.equals("A") ||tipodecliente.equals("B")){
+                              nombredelproductoavender = "";
+                              preciodelaventa = 0.0;
+                              puedecomprar = false;
+                            if (codigoproducto == 1 && tipodecliente.equals("a") || tipodecliente.equals("b")){
                                 nombredelproductoavender = "Azucar";
                                 preciodelaventa = 30.0;
                                 puedecomprar = true;
                                 seguircompra = false;
                                 contadorazucar++;
-                            } else if (codigoproducto == 2 && tipodecliente.equals("A") || tipodecliente.equals("B")){
+                            } else if (codigoproducto == 2 && tipodecliente.equals("a") || tipodecliente.equals("b")){
                                 nombredelproductoavender = "Avena";
                                 preciodelaventa = 25.0;
                                 puedecomprar = true;
                                 seguircompra = false;
                                 contadoravena++;
-                            } else if (codigoproducto == 3 && tipodecliente.equals("A") || tipodecliente.equals("B")){
+                            } else if (codigoproducto == 3 && tipodecliente.equals("a") || tipodecliente.equals("b")){
                                 nombredelproductoavender = "Trigo";
                                 preciodelaventa = 32.0;
                                 puedecomprar = true;
                                 seguircompra = false;
                                 contadortrigo++;
-                            } else if (codigoproducto == 4 && tipodecliente.equals("A") || tipodecliente.equals("C")){
+                            } else if (codigoproducto == 4 && tipodecliente.equals("a") || tipodecliente.equals("c")){
                                 nombredelproductoavender = "Maiz";
                                 preciodelaventa = 20.0;
                                 puedecomprar = true;
@@ -142,68 +145,9 @@ public class Rodriguez_Eric_ProyectoTienda {
                                 puedecomprar = false;
                             }
 
-                           /* switch (codigoproducto) {
-                                case 1:
-                                    sc.next();
-                                    if (tipodecliente.equals("A") || tipodecliente.equals("B")) {
-                                        nombredelproducto = "Azucar";
-                                        preciodelaventa = 30.0;
-                                        puedecomprar = true;
-                                        seguircompra = false;
-                                        contadorazucar++;
-                                    } else {
-                                        System.out.println("No puede comprar el producto");
-                                        seguircompra = true;
-                                    }
-                                    break;
-                                case 2:
-                                    sc.next();
-                                    if (tipodecliente.equals("A") || tipodecliente.equals("B")) {
-                                        nombredelproducto = "Avena";
-                                        preciodelaventa = 25.0;
-                                        puedecomprar = true;
-                                        seguircompra = false;
-                                        contadoravena++;
-                                    } else {
-                                        System.out.println("No puede comprar este producto");
-                                        puedecomprar = false;
-                                        seguircompra = true;
-                                    }
-                                    break;
-                                case 3:
-                                    sc.next();
-                                    if (tipodecliente.equals("A") || tipodecliente.equals("B")) {
-                                        nombredelproducto = " Trigo";
-                                        preciodelaventa = 32.0;
-                                        puedecomprar = true;
-                                        seguircompra = false;
-                                        contadortrigo++;
-                                    } else {
-                                        System.out.println("No puede comprar este producto");
-                                        puedecomprar = false;
-                                        seguircompra = true;
-                                    }
-                                    break;
-                                case 4:
-                                    sc.next();
-                                    if (tipodecliente.equals("A") || tipodecliente.equals("C")) {
-                                        puedecomprar = true;
-                                        nombredelproducto = "Maiz";
-                                        preciodelaventa = 20.0;
-                                        seguircompra = false;
-                                        contadormaiz++;
-                                    } else {
-                                        System.out.println("No puede comprar este producto ");
-                                        puedecomprar = false;
-                                        seguircompra = true;
-                                    }
-                                    break;
-                                default:
-                                    System.out.println("Codigo de producto no valido");
-                                    seguircompra = true; */
                             
 
-                            if (puedecomprar = true) {
+                            if (puedecomprar) {
                                 System.out.println("Su producto es: " + nombredelproductoavender + ",Precio por Kilogramos: Lps." + preciodelaventa);
                                 System.out.println("Ingrese la cantidad en Kilogramos a comprar: ");
                                 double cantidadkilo = sc.nextDouble();
@@ -214,7 +158,7 @@ public class Rodriguez_Eric_ProyectoTienda {
                             } else {
                                 System.out.println("No puede comprar el producto");
                             }
-
+                            if (!seguircompra){
                             System.out.println("Desea comprar mas productos? (si/no)");
                             String respuestasino = sc.nextLine().toLowerCase();
                             if (respuestasino.equals("si")) {
@@ -222,7 +166,8 @@ public class Rodriguez_Eric_ProyectoTienda {
                             } else if (respuestasino.equals("no")) {
                                 seguircompra = false;
                             }
-                        } while (seguircompra == true);
+                            }
+                        } while (seguircompra == false);
 
                         System.out.println("\n********F A C T U R A **********");
                         System.out.println(resumirventa);

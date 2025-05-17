@@ -81,11 +81,13 @@ public class Rodriguez_Eric_ProyectoTienda {
                     }
                     break;
                 //VENTAS
+                     
                 case 2:
+                   
                     if (estadocaja == true && puedevender == true) {
                         String tipodecliente = "";
 
-                         do{
+                         while (!tipodecliente.equals("A") && !tipodecliente.equals("B") && !tipodecliente.equals("C")){
                             System.out.println("*****VENTA*******");
                             System.out.println("Ingrese el tipo de cliente: ");
                             System.out.println("A - Puede comprar cualquier producto");
@@ -95,53 +97,57 @@ public class Rodriguez_Eric_ProyectoTienda {
                             if (!tipodecliente.equals("A") && !tipodecliente.equals("B") && !tipodecliente.equals("C")) {
                                 System.out.println("Tipo de cliente no valido, intente de nuevo!");
                                 seguircompra = false;
-                            } else{
-                                seguircompra = true;
-                            }
-                        } while (!tipodecliente.equals("a") || !tipodecliente.equals("b") || !tipodecliente.equals("c"));
+                                 
+                            } 
+                        } 
 
                         
                         double subtotalventa = 0.0;
                         String resumirventa = "";
-                        double preciodelaventa = 0.0;
+                        boolean seguircomprando = true;
+                       /* double preciodelaventa = 0.0;
                         String nombredelproductoavender = "";
                         int codigoproducto = 0;
 
-                            boolean puedecomprar = false;
-                        do {
+                            boolean puedecomprar = false;*/
+                        while (seguircomprando){
+                            int codigoproducto = 0;
+                            String nombredelproductoavender = "";
+                            double preciodelaventa = 0.0;
+                             boolean puedecomprar = false;
                             System.out.println("Ingrese el codigo del producto a vender \n1-Azucar - Lps. 30 x Kilo \n2-Avena - Lps. 25 x Kilo \n3-Trigo - Lps. 32 x Kilo \n4-Maiz - Lps. 20 x Kilo");
                             codigoproducto = sc.nextInt();
                             sc.nextLine();
-                              nombredelproductoavender = "";
-                              preciodelaventa = 0.0;
-                              puedecomprar = false;
-                            if (codigoproducto == 1 && tipodecliente.equals("a") || tipodecliente.equals("b")){
+                              
+                              
+                               
+                            if (codigoproducto == 1 && tipodecliente.equals("A") || tipodecliente.equals("B")){
                                 nombredelproductoavender = "Azucar";
                                 preciodelaventa = 30.0;
                                 puedecomprar = true;
-                                seguircompra = false;
+                                 
                                 contadorazucar++;
-                            } else if (codigoproducto == 2 && tipodecliente.equals("a") || tipodecliente.equals("b")){
+                            } else if (codigoproducto == 2 && tipodecliente.equals("A") || tipodecliente.equals("B")){
                                 nombredelproductoavender = "Avena";
                                 preciodelaventa = 25.0;
                                 puedecomprar = true;
-                                seguircompra = false;
+                                 
                                 contadoravena++;
-                            } else if (codigoproducto == 3 && tipodecliente.equals("a") || tipodecliente.equals("b")){
+                            } else if (codigoproducto == 3 && tipodecliente.equals("A") || tipodecliente.equals("B")){
                                 nombredelproductoavender = "Trigo";
                                 preciodelaventa = 32.0;
                                 puedecomprar = true;
-                                seguircompra = false;
+                               
                                 contadortrigo++;
-                            } else if (codigoproducto == 4 && tipodecliente.equals("a") || tipodecliente.equals("c")){
+                            } else if (codigoproducto == 4 && tipodecliente.equals("A") || tipodecliente.equals("C")){
                                 nombredelproductoavender = "Maiz";
                                 preciodelaventa = 20.0;
                                 puedecomprar = true;
-                                seguircompra = false;
+                                
                                 contadormaiz++;
                             } else {
                                 System.out.println("Lo siento, no puede comprar dicho producto, intente de nuevo");
-                                seguircompra = true;
+                                
                                 puedecomprar = false;
                             }
 
@@ -152,26 +158,28 @@ public class Rodriguez_Eric_ProyectoTienda {
                                 System.out.println("Ingrese la cantidad en Kilogramos a comprar: ");
                                 double cantidadkilo = sc.nextDouble();
                                 sc.nextLine();
+                                
                                 double subtotalproducto = cantidadkilo * preciodelaventa;
                                 subtotalventa += subtotalproducto;
-                                resumirventa += cantidadkilo + "Kilogramos de " + nombredelproductoavender + " a Lempiras " + preciodelaventa + "= Lps." + subtotalproducto + "\n";
-                            } else {
-                                System.out.println("No puede comprar el producto");
-                            }
-                            if (!seguircompra){
+                                
+                                resumirventa += cantidadkilo + " Kilogramos de " + nombredelproductoavender + " a Lempiras " + preciodelaventa + " = Lps." + subtotalproducto + "\n";
+                            }  
+                            
                             System.out.println("Desea comprar mas productos? (si/no)");
                             String respuestasino = sc.nextLine().toLowerCase();
-                            if (respuestasino.equals("si")) {
-                                seguircompra = true;
-                            } else if (respuestasino.equals("no")) {
-                                seguircompra = false;
+                            if (!respuestasino.equals("si")) {
+                                seguircomprando = false;
+                            }  else if (!respuestasino.equals("no")) {
+                                seguircomprando = true;
+                            } else {
+                                System.out.println("Opcion no valida, intente de nuevo");
                             }
-                            }
-                        } while (seguircompra == false);
+                             
+                        }
+                        
 
                         System.out.println("\n********F A C T U R A **********");
                         System.out.println(resumirventa);
-
                         double descuento = 0.0;
                         if (subtotalventa >= 5000) {
                             descuento = subtotalventa * 0.10;
@@ -182,6 +190,7 @@ public class Rodriguez_Eric_ProyectoTienda {
                         } else {
                             System.out.println("Descuento aplicado (0%) : Lps. 0.00 ");
                         }
+                       
 
                         double subtotalcondescuento = subtotalventa - descuento;
                         double impuesto = subtotalcondescuento * 0.07;

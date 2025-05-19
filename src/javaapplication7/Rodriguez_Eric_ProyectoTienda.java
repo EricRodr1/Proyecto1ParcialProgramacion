@@ -35,11 +35,13 @@ public class Rodriguez_Eric_ProyectoTienda {
         double kgazucar=0, kgavena=0,kgmaiz=0,kgtrigo=0;
         boolean puedevender = true;
         boolean menuvalido = false;
+        boolean puededepositar = true;
        
 
         do {
             try{
-            System.out.println("\n**** BIENVENIDO A LA TIENDA ****"); 
+            System.out.println("");
+            System.out.println("**** BIENVENIDO A LA TIENDA ****"); 
             System.out.println("1. ABRIR CAJA");
             System.out.println("2. VENTAS");
             System.out.println("3. COMPRAS");
@@ -59,8 +61,13 @@ public class Rodriguez_Eric_ProyectoTienda {
             switch (opcion) {
                 //ABRIR CAJA
                 case 1: 
+                    if (puededepositar == false){
+                        System.out.println("Caja abierta");
+                        puededepositar = true;
+                        break;
+                    }
                     boolean cantidadvalida= false;
-                    if (ingresarefectivo == false ) {
+                    if (ingresarefectivo == false) {
                         while (!cantidadvalida){
                         System.out.print("Ingrese la cantidad a depositar en lempiras para comenzar: Lps. ");
                         try{
@@ -82,7 +89,7 @@ public class Rodriguez_Eric_ProyectoTienda {
                         
                         estadocaja = true;
                         ingresarefectivo = true;
-                    } else if (ingresarefectivo == true) {
+                    } else if (ingresarefectivo == true && puededepositar == true) {
                         System.out.print("Ingrese la cantidad a depositar en lempiras: Lps. ");
                         cantidad = sc.nextDouble();
 
@@ -166,6 +173,9 @@ public class Rodriguez_Eric_ProyectoTienda {
                                 System.out.println("Ingrese la cantidad en Kilogramos a vender: ");
                                 
                                 double cantidadkilo = sc.nextDouble();
+                                if (cantidadkilo <= 0){
+                                     throw new IllegalArgumentException("Ingrese un numero positivo o mayor a cero");
+                                }
                                 if (nombredelproductoavender.equals("Azucar")) {
                                   kgazucar -= cantidadkilo;
                                 } else if (nombredelproductoavender.equals("Avena")) {
@@ -177,7 +187,6 @@ public class Rodriguez_Eric_ProyectoTienda {
                                   }
                                 if(cantidadkilo < kgazucar){
                                     System.out.println("No hay suficiente producto para vender");
-                                     
                                     break;
                                 } else if (cantidadkilo < kgavena){
                                     System.out.println("No hay suficiente producto para vender");
@@ -191,9 +200,7 @@ public class Rodriguez_Eric_ProyectoTienda {
                                             } 
                                 
                                 
-                                if (cantidadkilo <= 0){
-                                     throw new IllegalArgumentException("Ingrese un numero positivo");
-                                }
+                                
                                  
                                     
                                 sc.nextLine(); 
@@ -371,7 +378,7 @@ public class Rodriguez_Eric_ProyectoTienda {
                         System.out.println("**** FACTURA DE LA COMPRA ****");
                         System.out.println("Kilogramos de " +nombredelproducto+ " comprados: Kg. "+kilogramosacomprar);
                         System.out.println("Total a pagar: Lps. "+totaldecompra);
-                        //?
+                        
                         if (efectivocaja>= totaldecompra){
                             efectivocaja -= totaldecompra;
                             costoTotalCompras += totaldecompra;
@@ -464,6 +471,7 @@ public class Rodriguez_Eric_ProyectoTienda {
                             System.out.println("Se han depositado: Lps. "+String.format("%.2f", deposito)+" al banco");
                              depositobanco = true;
                              estadocaja = true;
+                             puededepositar = false;
                         numerodeventas = 0;
                         numerodecompras = 0;
                         volumendeventas = 0.0;

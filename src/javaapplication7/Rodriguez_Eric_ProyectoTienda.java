@@ -20,6 +20,7 @@ public class Rodriguez_Eric_ProyectoTienda {
     static int numerodeventas = 0;
     static int numerodecompras = 0;
     static double volumendeventas = 0.0;
+    static double costoTotalCompras = 0.0;
     static double totaldecompras = 0.0;
     static double mayorganancia = 0.0;//
     static double mayorgasto = 0.0;//
@@ -31,7 +32,7 @@ public class Rodriguez_Eric_ProyectoTienda {
         int contadorazucar = 0, contadoravena = 0, contadortrigo = 0, contadormaiz = 0;
         double cantidad = 0; //
         boolean proveedorvalido = false;//
-        
+        double kgazucar=0, kgavena=0,kgmaiz=0,kgtrigo=0;
         boolean puedevender = false;
         boolean menuvalido = false;
        
@@ -45,7 +46,8 @@ public class Rodriguez_Eric_ProyectoTienda {
             System.out.println("4. REPORTES");
             System.out.println("5. CIERRE DE CAJA");
             System.out.println("6. SALIR DEL SISTEMA");
-            System.out.println("Seleccione una opcion para comenzar!!: ");
+            System.out.println("Seleccione una opcion !!: ");
+                
             opcion = sc.nextInt(); 
             menuvalido = true;
             sc.nextLine();
@@ -76,12 +78,7 @@ public class Rodriguez_Eric_ProyectoTienda {
                             cantidadvalida= false;
                         }
                         }
-                        numerodeventas = 0;
-                        numerodecompras = 0;
-                        volumendeventas = 0.0;
-                        totaldecompras = 0.0;
-                        mayorganancia = 0.0;
-                        mayorgasto = 0.0;
+                        
                         estadocaja = true;
                         ingresarefectivo = true;
                     } else if (ingresarefectivo == true) {
@@ -136,7 +133,7 @@ public class Rodriguez_Eric_ProyectoTienda {
                              
                         while (seguircomprando){
                              boolean productovalido = false;
-                            System.out.println("Ingrese el codigo del producto a vender \n1-Azucar - Lps. 30 x Kilo \n2-Avena - Lps. 25 x Kilo \n3-Trigo - Lps. 32 x Kilo \n4-Maiz - Lps. 20 x Kilo");
+                            System.out.println("Ingrese el codigo del producto a vender  \n1-Azucar - Lps. 30 x Kilo (Stock: Kg. "+kgazucar+")\n2-Avena - Lps. 25 x Kilo (Stock: Kg. "+kgavena+") \n3-Trigo - Lps. 32 x Kilo (Stock: Kg. "+kgtrigo+") \n4-Maiz - Lps. 20 x Kilo (Stock: Kg. "+kgmaiz+")");
                              boolean valido = false;
                             try{
                             codigoproducto = sc.nextInt();
@@ -167,9 +164,11 @@ public class Rodriguez_Eric_ProyectoTienda {
                                 if (cantidadkilo <= 0){
                                      throw new IllegalArgumentException("Ingrese un numero positivo");
                                 }
+                                 
                                     
                                 sc.nextLine(); 
                                 double subtotalproducto = cantidadkilo * preciodelaventa;
+                                 
                                 subtotalventa += subtotalproducto; 
                                 resumirventa += cantidadkilo + " Kg de " + nombredelproductoavender + " a Lempiras " + preciodelaventa + " = Lps." + subtotalproducto + "\n";
                             }  catch (InputMismatchException e){
@@ -183,13 +182,17 @@ public class Rodriguez_Eric_ProyectoTienda {
                                 System.out.println("Opcion invalida, intente de nuevo");
                                 sc.next();
                             }
-                            System.out.println("Desea comprar mas producto? (si/no)");
+                            System.out.println("Desea comprar mas producto? Ingrese: (si/no)");
                             String respuestasino = sc.nextLine().toLowerCase();
                             if (respuestasino.equals("si") && (tipodecliente.equals("A") || tipodecliente.equals("B") || tipodecliente.equals("C"))){
                                 seguircomprando = true;
                             } else if (respuestasino.equals("no")){
                                        seguircomprando = false;
-                                        }
+                                        } else {
+                                System.out.println("Opcion invalida, intente de nuevo");
+                                
+                            }
+                            
                             }
                             
                              
@@ -221,19 +224,22 @@ public class Rodriguez_Eric_ProyectoTienda {
 
                         numerodeventas++;
                         volumendeventas += totalapagar;
-                        }
+                        } else {
+                        System.out.println("Caja cerrada, intente de nuevo");
+                    }
                     
                     break;
                     
                 //COMPRAS
                    
                 case 3:
+                    boolean hayefectivo = false;
                     String nombredelproducto = "";
                     
                         double preciodelacompra = 0.0;
                         boolean hayproducto = false;
                          
-                    if (estadocaja == true ){
+                    if (estadocaja == true && hayproducto == false ){
                          boolean proveedorr = false;
                           boolean productovalido = false;
                         do{
@@ -253,6 +259,7 @@ public class Rodriguez_Eric_ProyectoTienda {
                                   nombredelproducto = "Azucar";
                                   preciodelacompra = 25.0;
                                   hayproducto = true; 
+                                  
                                   productovalido = true;
                                 } else if (productoacomprar == 2 && proveedor.equals("B"))     {
                                   nombredelproducto = "Avena";
@@ -270,7 +277,7 @@ public class Rodriguez_Eric_ProyectoTienda {
                                   hayproducto = true;
                                   productovalido = true;
                                 } else if (productoacomprar == 4 && proveedor.equals("A")) {
-                                   nombredelproducto = "Maiz";
+                                  nombredelproducto = "Maiz";
                                   preciodelacompra = 18.0;
                                   hayproducto = true;
                                    productovalido = true;
@@ -293,17 +300,45 @@ public class Rodriguez_Eric_ProyectoTienda {
                         boolean kgvalid = false;
                         while (kgvalid == false){
                         System.out.print("El proveedor vende " +nombredelproducto+ "\nIngrese la cantidad de kilogramos a comprar: Kg.  "); 
+                        
                         try{
                         double kilogramosacomprar = sc.nextDouble();
+                        if (efectivocaja < kilogramosacomprar * preciodelacompra){
+                                     System.out.println("No se puede realizar la compra, efectivo insuficiente");
+                                     hayefectivo = true;
+                                     break;
+                                } 
+                     
+                         
+                        
                         if (kilogramosacomprar <= 0){
                             throw new IllegalArgumentException("Opcion invalida, ingrese un numero positivo y/o mayor a cero");
                         }
                         double totaldecompra = preciodelacompra * kilogramosacomprar;
                         efectivocaja -= totaldecompra;
+                        if (nombredelproducto.equals("Maiz")){
+                            kgmaiz += kilogramosacomprar;
+                        } else if (nombredelproducto.equals("Avena")){
+                            kgavena += kilogramosacomprar;
+                        } else if (nombredelproducto.equals("Trigo")){
+                            kgtrigo += kilogramosacomprar;
+                        } else if (nombredelproducto.equals("Azucar")){
+                            kgazucar += kilogramosacomprar;
+                        }
+                         
+                            
                         System.out.println("");
                         System.out.println("**** FACTURA DE LA COMPRA ****");
                         System.out.println("Kilogramos de " +nombredelproducto+ " comprados: Kg. "+kilogramosacomprar);
                         System.out.println("Total a pagar: Lps. "+totaldecompra);
+                        //?
+                        if (efectivocaja>= totaldecompra){
+                            efectivocaja -= totaldecompra;
+                            costoTotalCompras += totaldecompra;
+                        }
+                        if(totaldecompra > mayorgasto){
+                            mayorgasto = totaldecompra;
+                        }
                         System.out.println("Compra realizada, monto restante: Lps. "+efectivocaja);
                         System.out.println("");
                         numerodecompras++;
@@ -318,13 +353,16 @@ public class Rodriguez_Eric_ProyectoTienda {
                         }
                         puedevender = true;
                         
-                                
-                                
+                                 
                     } else if (estadocaja == false) {
                         System.out.println("Caja Cerrada, Favor intente de nuevo");
                         
                     }  
-                        break; 
+                    
+            
+                        break;
+                        
+                        //REPORTES
                 case 4:
                     if (estadocaja == true) {
                         double margenganancia = volumendeventas - totaldecompras;
@@ -334,8 +372,8 @@ public class Rodriguez_Eric_ProyectoTienda {
                         System.out.println("a. Cantidad en caja: Lps." + efectivocaja);
                         System.out.println("b. Numero de compras: " + numerodecompras + "\nNumero de Ventas: " + numerodeventas);
                         System.out.println("c. Volumen Total de Compras: " + volumendeventas + "\nVentas efectuadas: " + numerodeventas + "\nMargen de ganancia: Lps. " + margenganancia);
-                        System.out.println("d. Valor medio de venta: " + valormventa + " %\nValor medio de compra: Lps. " + valormcompra + " %");
-                        System.out.println("e. Venta con mayor ganancia: Lps. \nCompra con mas gasto efectuada: ");
+                        System.out.println("d. Valor medio de venta: " + String.format("%.2f", valormventa)+ " %\nValor medio de compra: " + String.format("%.2f", valormcompra)+" %");
+                        System.out.println("e. Venta con mayor ganancia: Lps."+mayorganancia+"  \nCompra con mas gasto efectuada: Lps. "+mayorgasto);
 
                         String productoestrella = "";
                         if (contadorazucar > contadortrigo && contadorazucar > contadormaiz && contadorazucar > contadoravena) {
@@ -354,28 +392,60 @@ public class Rodriguez_Eric_ProyectoTienda {
                     } else if (estadocaja == false) {
                         System.out.println("Caja Cerrada, Favor intente de nuevo");
                     }
+                    
                     break;
-
+                    
+                //CIERRE DE CAJA
                 case 5:
                     if (estadocaja == true) {
                         estadocaja = false;
                         ingresarefectivo = true;
-                        
-                        System.out.println("********CIERRE DE CAJA********");
+                        boolean depositobanco = false;
+                        while (!depositobanco){
+                           System.out.println("********CIERRE DE CAJA********");
                         double gananciatot = volumendeventas - totaldecompras;
                         System.out.println("La ganancia total en el dia es de Lps. " + gananciatot);
                         System.out.println("Efectivo a la hora de cierre: Lps. " + efectivocaja);
                         System.out.println("Cuanto desea depositar en el banco? (Maximo el 60%)");
                         double maximodepo = (efectivocaja * 0.60);
                         System.out.println("El maximo a depositar el dia de hoy seria: Lps. " + maximodepo);
-                        double deposito = sc.nextDouble();
                         double depositofin = efectivocaja * 0.60;
-                        if (deposito > depositofin) {
+                       
+                        try{
+                        double deposito = sc.nextDouble();
+                        //Controlar al deposito 
+                        if(deposito <= 0){
+                            throw new IllegalArgumentException("Opcion invalida, ingrese un numero positivo");
+                        }if (deposito > depositofin) {
                             System.out.println("La cantidad excede el 60%");
+                            depositobanco = false;
+                        } else{
+                            System.out.println("Se han depositado: Lps. "+String.format("%.2f", deposito)+" al banco");
+                             depositobanco = true;
+                             estadocaja = true;
+                        numerodeventas = 0;
+                        numerodecompras = 0;
+                        volumendeventas = 0.0;
+                        totaldecompras = 0.0;
+                        mayorganancia = 0.0;
+                        mayorgasto = 0.0;
+                        efectivocaja -= deposito;
+
                         }
-                    } else if (estadocaja == false) {
-                        System.out.println("Caja Cerrada, Favor intente de nuevo");
+                        } catch (InputMismatchException e) {
+                            System.out.println("Opcion no valida, intente de nuevo");
+                            sc.next();
+                             depositobanco = false;
+                        } catch (IllegalArgumentException e){
+                            System.out.println(e.getMessage());
+                        } 
+                        }
+                        
+                    }  else {
+                        System.out.println("Caja cerrada, intente de nuevo");
                     }
+                    
+                    
                     break;
 
                 case 6:

@@ -33,7 +33,7 @@ public class Rodriguez_Eric_ProyectoTienda {
         double cantidad = 0; //
         boolean proveedorvalido = false;//
         double kgazucar=0, kgavena=0,kgmaiz=0,kgtrigo=0;
-        boolean puedevender = false;
+        boolean puedevender = true;
         boolean menuvalido = false;
        
 
@@ -57,6 +57,7 @@ public class Rodriguez_Eric_ProyectoTienda {
                 menuvalido= false;  
             }  
             switch (opcion) {
+                //ABRIR CAJA
                 case 1: 
                     boolean cantidadvalida= false;
                     if (ingresarefectivo == false ) {
@@ -101,7 +102,9 @@ public class Rodriguez_Eric_ProyectoTienda {
                      
                 case 2:
                    boolean clientevalido = false;
-                    if (estadocaja == true && puedevender == true) {
+                   
+                    if (estadocaja == true ) {
+                        if ( puedevender == false){
                         String tipodecliente= "";
                             boolean seguircompra = true;
                           do {
@@ -143,9 +146,9 @@ public class Rodriguez_Eric_ProyectoTienda {
                             double preciodelaventa = 0.0;
                             
                                 if (codigoproducto == 1 && (tipodecliente.equals("A") || tipodecliente.equals("B"))) {
-                            nombredelproductoavender = "Azucar"; preciodelaventa = 30; valido = true; contadorazucar++;
+                            nombredelproductoavender = "Azucar"; preciodelaventa = 30; valido = true; contadorazucar++;  
                         } else if (codigoproducto == 2 && (tipodecliente.equals("A") || tipodecliente.equals("B"))) {
-                            nombredelproductoavender = "Avena"; preciodelaventa = 25; valido = true; contadoravena++;
+                            nombredelproductoavender = "Avena"; preciodelaventa = 25; valido = true; contadoravena++;  
                         } else if (codigoproducto == 3 && (tipodecliente.equals("A") || tipodecliente.equals("B"))) {
                             nombredelproductoavender = "Trigo"; preciodelaventa = 32; valido = true; contadortrigo++;
                         } else if (codigoproducto == 4 && (tipodecliente.equals("A") || tipodecliente.equals("C"))) {
@@ -153,14 +156,41 @@ public class Rodriguez_Eric_ProyectoTienda {
                         } else {
                             System.out.println("No puede comprar ese producto.");
                         }
+                                
                              
                             boolean kgvalidoo = false;
 
-                            if (valido) {
+                            if (valido  ) {
                                 System.out.println("Su producto es: " + nombredelproductoavender + ",Precio por Kilogramos: Lps." + preciodelaventa);
                                 try {
-                                System.out.println("Ingrese la cantidad en Kilogramos a comprar: ");
+                                System.out.println("Ingrese la cantidad en Kilogramos a vender: ");
+                                
                                 double cantidadkilo = sc.nextDouble();
+                                if (nombredelproductoavender.equals("Azucar")) {
+                                  kgazucar -= cantidadkilo;
+                                } else if (nombredelproductoavender.equals("Avena")) {
+                                  kgavena -= cantidadkilo;
+                                } else if (nombredelproductoavender.equals("Trigo")) {
+                                  kgtrigo -= cantidadkilo;
+                                } else if (nombredelproductoavender.equals("Maiz")) {
+                                   kgmaiz -= cantidadkilo;
+                                  }
+                                if(cantidadkilo < kgazucar){
+                                    System.out.println("No hay suficiente producto para vender");
+                                     
+                                    break;
+                                } else if (cantidadkilo < kgavena){
+                                    System.out.println("No hay suficiente producto para vender");
+                                    break;
+                                } else if (cantidadkilo < kgtrigo){
+                                    System.out.println("No hay suficiente producto para vender");
+                                    break;
+                                }else if (cantidadkilo < kgmaiz){
+                                    System.out.println("No hay suficiente producto para vender");
+                                    break;
+                                            } 
+                                
+                                
                                 if (cantidadkilo <= 0){
                                      throw new IllegalArgumentException("Ingrese un numero positivo");
                                 }
@@ -177,6 +207,9 @@ public class Rodriguez_Eric_ProyectoTienda {
                             } catch (IllegalArgumentException e){
                                     System.out.println(e.getMessage());
                             }
+                                if (nombredelproductoavender.equals("Azucar")){
+                                    
+                                }
                                 }
                             } catch (InputMismatchException  e){
                                 System.out.println("Opcion invalida, intente de nuevo");
@@ -217,6 +250,7 @@ public class Rodriguez_Eric_ProyectoTienda {
                         double impuesto = subtotalcondescuento * 0.07;
                         System.out.println("Impuesto (7%): Lps." + String.format("%.2f", impuesto));
                         double totalapagar = subtotalcondescuento + impuesto;
+                        
                         System.out.println("Su total a pagar es de: Lps. " + String.format("%.2f", totalapagar));
 
                         efectivocaja += totalapagar;
@@ -224,7 +258,13 @@ public class Rodriguez_Eric_ProyectoTienda {
 
                         numerodeventas++;
                         volumendeventas += totalapagar;
-                        } else {
+                        
+                        } else if (puedevender == true)  {
+                        System.out.println("Necesita comprar para comenzar a vender");
+                    } else {
+                          System.out.println("Caja cerrada, intente de nuevo");  
+                            }
+                    } else if (estadocaja == false){
                         System.out.println("Caja cerrada, intente de nuevo");
                     }
                     
@@ -343,6 +383,7 @@ public class Rodriguez_Eric_ProyectoTienda {
                         System.out.println("");
                         numerodecompras++;
                         kgvalid = true;
+                        puedevender = false;
                         } catch (InputMismatchException e){
                             System.out.println("Ingrese una cantidad valida porfavor ");
                             sc.next();
@@ -351,7 +392,7 @@ public class Rodriguez_Eric_ProyectoTienda {
                             System.out.println(e.getMessage());
                         }
                         }
-                        puedevender = true;
+                        
                         
                                  
                     } else if (estadocaja == false) {
@@ -365,7 +406,7 @@ public class Rodriguez_Eric_ProyectoTienda {
                         //REPORTES
                 case 4:
                     if (estadocaja == true) {
-                        double margenganancia = volumendeventas - totaldecompras;
+                        double margenganancia = volumendeventas - costoTotalCompras;
                         double valormventa = (numerodeventas > 0) ? (volumendeventas / numerodeventas) : 0;
                         double valormcompra = (numerodecompras > 0) ? (totaldecompras / numerodecompras) : 0;
                         System.out.println("********REPORTES********");

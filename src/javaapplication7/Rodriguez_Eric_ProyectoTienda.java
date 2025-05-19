@@ -174,7 +174,8 @@ public class Rodriguez_Eric_ProyectoTienda {
                                 
                                 double cantidadkilo = sc.nextDouble();
                                 if (cantidadkilo <= 0){
-                                     throw new IllegalArgumentException("Ingrese un numero positivo o mayor a cero");
+                                      System.out.println("Opcion no valida, ingrese un valor mayor a cero"); 
+                                continue;
                                 }
                                 if (nombredelproductoavender.equals("Azucar")) {
                                   kgazucar -= cantidadkilo;
